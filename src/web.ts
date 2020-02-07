@@ -5,7 +5,7 @@ export class GalleryPluginWeb extends WebPlugin implements GalleryPluginPlugin {
   constructor() {
     super({
       name: 'GalleryPlugin',
-      platforms: ['web']
+      platforms: ['web','android']
     });
   }
 
