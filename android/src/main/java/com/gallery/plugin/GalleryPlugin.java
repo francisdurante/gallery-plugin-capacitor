@@ -1,5 +1,7 @@
 package com.gallery.plugin;
 
+import android.content.Intent;
+
 import com.getcapacitor.JSObject;
 import com.getcapacitor.NativePlugin;
 import com.getcapacitor.Plugin;
@@ -11,10 +13,15 @@ public class GalleryPlugin extends Plugin {
 
     @PluginMethod()
     public void echo(PluginCall call) {
-        String value = call.getString("value");
+        Boolean isMultiple = call.getBoolean("isMultiple");
+        if(isMultiple){
+            Intent intent = new Intent(getContext(),GalleryMainActivity.class);
+            getActivity().startActivity(intent);
+        }
+//        JSObject ret = new JSObject();
+//        ret.put("value", value);
 
-        JSObject ret = new JSObject();
-        ret.put("value", value);
-        call.success(ret);
+
+//        call.success(ret);
     }
 }
