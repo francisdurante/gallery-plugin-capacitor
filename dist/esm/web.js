@@ -12,7 +12,7 @@ export class GalleryPluginWeb extends WebPlugin {
     constructor() {
         super({
             name: 'GalleryPlugin',
-            platforms: ['web']
+            platforms: ['web', 'android']
         });
     }
     echo(options) {

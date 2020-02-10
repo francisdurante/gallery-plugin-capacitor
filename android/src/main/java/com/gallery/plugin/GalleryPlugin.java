@@ -8,20 +8,28 @@ import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 
+import org.json.JSONException;
+
 @NativePlugin()
 public class GalleryPlugin extends Plugin {
+    static boolean isMultiple = false;
+    private static PluginCall response = null;
 
     @PluginMethod()
-    public void echo(PluginCall call) {
-        Boolean isMultiple = call.getBoolean("isMultiple");
-        if(isMultiple){
-            Intent intent = new Intent(getContext(),GalleryMainActivity.class);
-            getActivity().startActivity(intent);
-        }
-//        JSObject ret = new JSObject();
-//        ret.put("value", value);
+    public void callGallery(PluginCall call) {
+      response = call;
+      isMultiple = call.getBoolean("isMultiple");
+      Intent intent = new Intent(getContext(), GalleryMainActivity.class);
+      getActivity().startActivity(intent);
+    }
 
-
-//        call.success(ret);
+    public static void returnResponse(Object object){
+      JSObject jsObject = new JSObject();
+      try {
+        jsObject.putSafe("data",object);
+        response.success(jsObject);
+      } catch (JSONException e) {
+        e.printStackTrace();
+      }
     }
 }
