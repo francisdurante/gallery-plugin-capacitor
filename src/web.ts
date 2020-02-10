@@ -9,7 +9,7 @@ export class GalleryPluginWeb extends WebPlugin implements GalleryPluginPlugin {
     });
   }
 
-  async echo(options: { value: string }): Promise<{value: string}> {
+  async callGallery(options: { value: Object }): Promise<{value: Object}> {
     console.log('ECHO', options);
     return options;
   }

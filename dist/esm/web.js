@@ -15,7 +15,7 @@ export class GalleryPluginWeb extends WebPlugin {
             platforms: ['web', 'android']
         });
     }
-    echo(options) {
+    callGallery(options) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log('ECHO', options);
             return options;

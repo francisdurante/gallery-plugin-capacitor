@@ -2,10 +2,10 @@ import { WebPlugin } from '@capacitor/core';
 import { GalleryPluginPlugin } from './definitions';
 export declare class GalleryPluginWeb extends WebPlugin implements GalleryPluginPlugin {
     constructor();
-    echo(options: {
-        value: string;
+    callGallery(options: {
+        value: Object;
     }): Promise<{
-        value: string;
+        value: Object;
     }>;
 }
 declare const GalleryPlugin: GalleryPluginWeb;

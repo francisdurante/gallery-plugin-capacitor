@@ -4,7 +4,7 @@ declare module "@capacitor/core" {
     }
 }
 export interface GalleryPluginPlugin {
-    echo(options: {
+    callGallery(options: {
         value: string;
     }): Promise<{
         value: string;
