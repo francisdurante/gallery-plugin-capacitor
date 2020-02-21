@@ -1,9 +1,14 @@
 package com.gallery.plugin;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,10 +29,18 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.gallery.plugin.galleryplugin.R;
+import com.getcapacitor.JSObject;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 
@@ -37,6 +50,7 @@ public class VideosFragment extends Fragment {
   static GridView gallery;
   private ArrayList<String> images;
   private ArrayList<String> selectedVideo;
+
 
   @Nullable
   @Override
@@ -56,12 +70,23 @@ public class VideosFragment extends Fragment {
       @Override
       public void onClick(View view) {
         if (selectedVideo.size() != 0) {
-          //return all selected images to app.\
-          JSONArray response = new JSONArray();
+            BitmapFactory.Options options=new BitmapFactory.Options();
+            options.inSampleSize = 1;
+
+            File f = savebitmap("thumbnail");
+          //return all selected video to app.\
+            JSONObject object = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
           for (int x = 0; x < selectedVideo.size(); x++) {
-            response.put(selectedVideo.get(x));
+              try {
+                  jsonArray.put(selectedVideo.get(x));
+                  object.put("thumbnail",f.getAbsolutePath());
+                  object.put("data",jsonArray);
+              } catch (JSONException e) {
+                  e.printStackTrace();
+              }
           }
-          GalleryPlugin.returnResponse(response);
+          GalleryPlugin.returnResponse(object);
           getActivity().finish();
         } else {
           Toast.makeText(getContext(), "Nothing is selected.", Toast.LENGTH_SHORT).show();
@@ -116,6 +141,37 @@ public class VideosFragment extends Fragment {
       selectedVideo.remove(images.get(index));
     }
   }
+
+    private File savebitmap(String filename) {
+        String extStorageDirectory = Environment.getExternalStorageDirectory() + "/Android/data/";
+        OutputStream outStream = null;
+
+        File file = new File(extStorageDirectory,filename + ".png");
+        if (file.exists()) {
+            file.delete();
+            file = new File(extStorageDirectory, filename + ".png");
+        }else
+        {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            // make a new bitmap from your file
+            Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(selectedVideo.get(0), MediaStore.Video.Thumbnails.FULL_SCREEN_KIND);
+
+            outStream = new FileOutputStream(file);
+            bmThumbnail.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+            outStream.flush();
+            outStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+
+    }
 
   private class ImageAdapterGallery extends BaseAdapter {
     private Activity context;
@@ -270,8 +326,7 @@ public class VideosFragment extends Fragment {
       ArrayList<String> listOfAllImages = new ArrayList<String>();
       String absolutePathOfImage = "";
       uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-
-      String[] projection = {MediaStore.MediaColumns.DATA,
+        String[] projection = {MediaStore.MediaColumns.DATA,
         MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
 
       cursor = activity.getContentResolver().query(uri, projection, null,

@@ -26,6 +26,8 @@ import com.bumptech.glide.Glide;
 import com.gallery.plugin.galleryplugin.R;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -59,15 +61,23 @@ public class PictureFragment extends Fragment {
       public void onClick(View view) {
         if (selectedImage.size() != 0) {
           //return all selected images to app.\
-          JSONArray response = new JSONArray();
-          for (int x = 0; x < selectedImage.size(); x++) {
-            response.put(selectedImage.get(x));
-          }
-          GalleryPlugin.returnResponse(response);
-          getActivity().finish();
+
+            JSONObject object = new JSONObject();
+            try {
+                JSONArray response = new JSONArray();
+                for (int x = 0; x < selectedImage.size(); x++) {
+                    response.put(selectedImage.get(x));
+                }
+                object.put("data",response);
+            }
+            catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                GalleryPlugin.returnResponse(object);
+                getActivity().finish();
         } else {
-          Toast.makeText(getContext(), "Nothing is selected.", Toast.LENGTH_SHORT).show();
-        }
+              Toast.makeText(getContext(), "Nothing is selected.", Toast.LENGTH_SHORT).show();
+            }
       }
     });
 

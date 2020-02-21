@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import com.gallery.plugin.galleryplugin.R;
 
+import org.json.JSONObject;
+
 public class GalleryMainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
     private static final int REQUEST_WRITE_PERMISSION = 411;
     private BottomNavigationView bottomNavigationView;
@@ -78,6 +80,7 @@ public class GalleryMainActivity extends AppCompatActivity implements ActivityCo
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
       Fragment fragment = null;
+      JSONObject object = new JSONObject();
       switch (menuItem.getTitle().toString()) {
 
         case "Pictures":
@@ -88,13 +91,25 @@ public class GalleryMainActivity extends AppCompatActivity implements ActivityCo
               break;
 
         case "Live":
-              GalleryPlugin.returnResponse("request_live");
-              finish();
-              break;
+            try {
+                object.put("data", "request_live");
+            }catch (Exception e)
+            {
+                //
+            }
+            GalleryPlugin.returnResponse(object);
+            finish();
+            break;
         case "Pending":
-             GalleryPlugin.returnResponse("request_pending");
-             finish();
-             break;
+            try {
+                object.put("data", "request_pending");
+            }catch (Exception e)
+            {
+                //
+            }
+            GalleryPlugin.returnResponse(object);
+            finish();
+            break;
       }
 
       return loadFragment(fragment);
