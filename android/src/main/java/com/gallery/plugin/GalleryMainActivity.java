@@ -107,6 +107,13 @@ public class GalleryMainActivity extends AppCompatActivity implements ActivityCo
             {
                 //
             }
+          case "F!eekTok":
+              try {
+                  object.put("data", "request_fleektok");
+              }catch (Exception e)
+              {
+                  //
+              }
             GalleryPlugin.returnResponse(object);
             finish();
             break;
