@@ -98,11 +98,10 @@ public class VideosFragment extends Fragment {
       @Override
       public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        if (spinner.getSelectedItem().toString().equals("Camera")) {
-//          getActivity().startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), 1000);
-          //return response
-          getActivity().finish();
-        }
+          if ("Camera".equals(spinner.getSelectedItem().toString())) {
+              GalleryPlugin.returnResponse("camera_request");
+              getActivity().finish();
+          }
       }
 
       @Override

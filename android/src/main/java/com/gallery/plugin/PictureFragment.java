@@ -86,7 +86,6 @@ public class PictureFragment extends Fragment {
       public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
         if (spinner.getSelectedItem().toString().equals("Camera")) {
-//          getActivity().startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), 1000);
           GalleryPlugin.returnResponse("camera_request");
           getActivity().finish();
         }
