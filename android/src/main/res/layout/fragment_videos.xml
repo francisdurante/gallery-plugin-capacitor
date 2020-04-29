@@ -21,7 +21,8 @@
     android:stretchMode="columnWidth"
     android:verticalSpacing="5sp"
     android:horizontalSpacing="5sp"
-    android:drawSelectorOnTop="true">
+    android:drawSelectorOnTop="true"
+    android:layout_marginBottom="80sp">
 
   </GridView>
 </RelativeLayout>
